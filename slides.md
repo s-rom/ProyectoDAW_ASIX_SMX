@@ -165,3 +165,8 @@ Para acceder a la página web, introducimos en nuestro navegador
 ```
 http://<ip_de_la_maquina>:5000
 ```
+
+**Ejemplo**
+```shell
+http://172.18.127.188:5000
+```
