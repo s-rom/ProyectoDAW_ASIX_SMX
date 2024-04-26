@@ -1,0 +1,91 @@
+Instalar net-tools, máquina adaptador puente
+Instalar sqlite
+Instalar nginx
+
+```shell
+
+
+# Regla del firewall
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTP'
+
+```
+
+
+## Instalar pip y virtualenv
+
+
+```shell
+sudo apt install python3-pip
+pip install virtualenv
+sudo apt install python3.10-venv
+python3 -m venv gym
+```
+
+## Activar virtual env
+
+```shell
+source gym/bin/activate   # Para activar el environment
+```
+
+
+Instalamos los paquetes necesarios, o bien a mano (`python3 -m pip install`) o bien usando el fichero de `requeriements.txt`:
+```shell
+pip install -r requirements.txt
+```
+
+python3 -m flask  --app app run --host=0.0.0.0
+
+gunicorn -b 172.18.66.216  "app:app"
+
+
+
+
+WSGI
+modificar el codigo para que use mysql (mariadb) 
+
+
+user::rwx
+user:marc:rwx
+mask:r--
+
+
+
+--------------------------------- systemd service --------------------------------- 
+
+
+[Unit]
+Description=Proyecto gym (gunicorn flask web app)
+After=network.target
+#Requires=gunicorn.socket
+
+
+[Service]
+User=sergi
+Group=sergi
+WorkingDirectory=/home/sergi/Proyecto_Gym/
+Environment="PATH=/home/sergi/Proyecto_Gym/gym/bin"
+ExecStart="/home/sergi/Proyecto_Gym/launch.sh"
+#ExecStart="/home/sergi/Proyecto_Gym/gym/bin/gunicorn --bind unix:gym.sock wsgi:app"
+
+[Install]
+WantedBy=multi-user.target
+
+
+----------------------------------- nginx 
+
+server {
+        listen 80;
+        server_name 172.18.66.216;
+
+        location / {
+                proxy_pass http://127.0.0.1:5000;
+        }
+}
+
+
+
+---------------------------------- launch.sh
+
+/home/sergi/Proyecto_Gym/gym/bin/gunicorn --bind 127.0.0.1:5000 wsgi:app
+
